@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   requests: ^4.7.0
   pocketbase: ^0.11.0
+  get: ^4.6.6
 
 dev_dependencies:
   flutter_test:
