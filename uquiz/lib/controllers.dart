@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:uquiz/members.dart';
-import 'models.dart';
 import 'package:uquiz/shopping.dart';
+import 'models.dart';
 
 class UQuizController extends GetxController {
   var appName = 'uQuiz'.obs;
@@ -15,18 +15,32 @@ class UQuizController extends GetxController {
   final passwordController = TextEditingController();
 
   Future<void> authen(String email, String password) async {
-      final res = pb.admins.authWithPassword(email, password);
-      isAdmin = true.obs;
-      if (pb.authStore.isValid) {
-        print('admin logged in: ${email}');
-        Get.to(()=> const MemberListPage());
-      } else {
-        final res = pb.collection('users').authWithPassword(email, password);
-        isAdmin = false.obs;
+    try {
+      // ตรวจสอบการเข้าสู่ระบบสำหรับ Admin
+      try {
+        final adminRes = await pb.admins.authWithPassword(email, password);
         if (pb.authStore.isValid) {
-          print('user logged in: ${email}');
-          Get.to(()=> const Shopping());
+          isAdmin.value = true;
+          print('Admin logged in: $email');
+          Get.to(() => const MemberListPage()); // ไปหน้า Admin
+          return;
         }
+      } catch (e) {
+        print('Not an admin or failed admin login: $e');
       }
+
+      // ถ้าไม่ใช่ admin ให้ตรวจสอบว่าเป็นผู้ใช้ทั่วไปหรือไม่
+      final userRes =
+          await pb.collection('users').authWithPassword(email, password);
+      if (pb.authStore.isValid) {
+        isAdmin.value = false;
+        print('User logged in: $email');
+        Get.to(() => const Shopping()); // ไปหน้า Shopping
+      } else {
+        Get.snackbar("Error", "Invalid email or password");
+      }
+    } catch (e) {
+      Get.snackbar("Error", "Login failed: $e");
     }
   }
+}

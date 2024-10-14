@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:requests/requests.dart';
 import 'home.dart';
 
 class Shopping extends StatefulWidget {

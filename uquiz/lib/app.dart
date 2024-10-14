@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:uquiz/controllers.dart';
-import 'package:uquiz/members.dart';
 import 'package:get/get.dart';
-
-// import 'home.dart';
-// import 'shopping.dart';
-import 'login.dart';
+import 'package:uquiz/controllers.dart';
+import 'package:uquiz/login.dart';
+import 'package:uquiz/register.dart'; // นำเข้า RegisterPage
 
 class UQuizBindings implements Bindings {
   @override
   void dependencies() {
-    // Get.put(() => UQuizController());
     Get.lazyPut(() => UQuizController());
   }
-
 }
+
 class UQuizApp extends StatefulWidget {
   const UQuizApp({super.key});
 
@@ -28,9 +24,11 @@ class _UQuizAppState extends State<UQuizApp> {
     return GetMaterialApp(
       title: 'UQuiz App',
       initialBinding: UQuizBindings(),
-      // home: Home(),
-      // home: MemberListPage(), //Shopping(),
-      home: const LoginPage(),
+      initialRoute: '/login', // หน้าแรกเป็นหน้า login
+      getPages: [
+        GetPage(name: '/login', page: () => const LoginPage()), // หน้า LoginPage
+        GetPage(name: '/register', page: () => RegisterPage()), // หน้า RegisterPage
+      ],
     );
   }
 }

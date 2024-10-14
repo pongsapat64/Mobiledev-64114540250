@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:uquiz/controllers.dart';
-import 'package:uquiz/shopping.dart';
-
-import 'members.dart';
+import 'package:uquiz/controllers.dart'; // controller ที่ใช้ในการจัดการ authen
+import 'package:uquiz/register.dart';    // เพิ่มหน้า RegisterPage
+import 'members.dart';                   // เพิ่มหน้า MemberListPage
+import 'shopping.dart';                  // เพิ่มหน้า ShoppingPage
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,14 +13,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // var String name = "Paul";
   final _formKey = GlobalKey<FormState>();
-  // final emailController = TextEditingController();
-  // final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final ctrl = Get.find<UQuizController>();
+    final ctrl = Get.find<UQuizController>(); // เข้าถึง Controller ของ GetX
     return Scaffold(
       body: Form(
         key: _formKey,
@@ -62,31 +59,28 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     // Perform login logic here
-                    print('email: ${ctrl.emailController.text}');
-                    print('password: ${ctrl.passwordController.text}');
-                    //Navigator.pop(context);
                     ctrl.authen(
                       ctrl.emailController.text,
                       ctrl.passwordController.text,
                     );
-                    // final email = ctrl.emailController.text;
-                    // if (email == 'admin@ubu.ac.th') {
                   }
                 },
                 child: const Text('Submit'),
               ),
             ),
+            
+            // ปุ่มเพิ่มสำหรับนำไปหน้า Register
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextButton(
+                onPressed: () {
+                  Get.toNamed('/register'); // นำทางไปหน้า Register
+                },
+                child: const Text("Don't have an account? Register here"),
+              ),
+            ),
           ],
         ),
-      ),
-    );
-  }
-
-  void to(BuildContext context, Widget page) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (BuildContext context) => page,
       ),
     );
   }
