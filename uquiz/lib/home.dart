@@ -1,42 +1,54 @@
 import 'package:flutter/material.dart';
-import 'package:requests/requests.dart';
+import 'shopping.dart';
 
-class Home extends StatefulWidget {
+class Home extends StatelessWidget {
   const Home({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('UQuizApp')),
-      body: Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.phone),
-                  onPressed: () {
-                    // const url = 'https://fakestoreapi.com/products?limit=5';
-                    const url = 'https://randomuser.me/api/';
-                    Requests.get(url).then((r) {
-                      print(r.json()['results'][0]['phone']);
-                    });
-                    // print('Press');
-                  },
-                ),
-                const Text("Whooaaaa"),
-              ],
+      appBar: AppBar(
+        title: const Text("Home"),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              "ยินดีต้อนรับ!",
+              style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
             ),
-          ),
-          const Expanded(child: Text("I'm")),
-          const Text("LOST"),
-        ],
+            const SizedBox(height: 20),
+            const Text(
+              "กดเพื่อดูรายการสินค้าทั้งหมด",
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.grey,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 40),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Shopping()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+              ),
+              child: const Text(
+                "ไปยังร้านค้า",
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

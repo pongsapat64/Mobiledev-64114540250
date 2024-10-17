@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:uquiz/controllers.dart'; // controller ที่ใช้ในการจัดการ authen
 import 'package:uquiz/register.dart';    // เพิ่มหน้า RegisterPage
-import 'members.dart';                   // เพิ่มหน้า MemberListPage
-import 'shopping.dart';                  // เพิ่มหน้า ShoppingPage
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -22,6 +20,7 @@ class _LoginPageState extends State<LoginPage> {
       body: Form(
         key: _formKey,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Padding(
                 padding: EdgeInsets.all(8.0),
@@ -31,6 +30,9 @@ class _LoginPageState extends State<LoginPage> {
               child: TextFormField(
                 controller: ctrl.emailController,
                 validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your email';
+                  }
                   return null;
                 },
                 decoration: const InputDecoration(
@@ -45,6 +47,9 @@ class _LoginPageState extends State<LoginPage> {
                 obscureText: true,
                 controller: ctrl.passwordController,
                 validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your password';
+                  }
                   return null;
                 },
                 decoration: const InputDecoration(
@@ -58,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
               child: ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    // Perform login logic here
+                    // เรียกใช้ฟังก์ชันล็อกอินจาก Controller
                     ctrl.authen(
                       ctrl.emailController.text,
                       ctrl.passwordController.text,
@@ -74,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
               padding: const EdgeInsets.all(8.0),
               child: TextButton(
                 onPressed: () {
-                  Get.toNamed('/register'); // นำทางไปหน้า Register
+                  Get.to(() => RegisterPage()); // นำทางไปหน้า Register
                 },
                 child: const Text("Don't have an account? Register here"),
               ),
